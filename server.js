@@ -37,13 +37,42 @@ app.post('/api/users/register', (req, res) => {
     // 회원 가입 할때 필요한 정보들을 client에서 가져오면
     // 그것들을 데이터 베이스에 넣어준다.
     
-    console.log('api test')
-    connection.query("insert into users('name','password','email', 'zip') values(?,?,?,?)", 
-        (err, rows, fields) => {
-        res.send(rows);
-        console.log(rows);
+    
+   let sql="insert into users values(?,?,?,?)";
+    let userName=req.body.name;
+    let userPw=req.body.password;
+    let userAddr= req.body.address;
+    let userEmail=req.body.email;
+
+    let params=[userName,userPw,userAddr,userEmail];
+    connection.query(sql,params,(err,rows,fields)=>{
+        if(err) res.json({success:false, err})
+        return res.status(200).json({
+            success:true
+        })
+    })
+
+    
     });
-})
+
 
 app.listen(port, () => console.log(`서버 가동 포트번호: ${port}`));
 
+app.post('/api/users/login', (req, res)=>{
+
+    let sql="select * from users where userName=? and userPw=?";
+    let userEmail=req.body.email;
+    let userPw=req.body.password;
+
+    let params=[userEmail,userPw];
+    connection.query(sql, params,(err,rows,fields)=>{
+        console.log("test");
+        console.log(rows);
+        console.log(err);
+        
+        if(err) res.json({loginSuccess:false, err})
+        return res.status(200).json({
+            loginSuccess:true
+        })
+    })
+})
