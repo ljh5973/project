@@ -3,6 +3,9 @@
 #database
 /database.json
 
+#google
+/google.json
+google.json
 # dependencies
 /node_modules
 /.pnp
