@@ -120,19 +120,20 @@ app.listen(port, () => console.log(`서버 가동 포트번호: ${port}`));
 
 app.post('/api/users/login', (req, res)=>{
 
-    let sql="select * from users where userName=? and userPw=?";
+    let sql="select * from users where userEmail=? and userPw=?";
     let userEmail=req.body.email;
     let userPw=req.body.password;
 
     let params=[userEmail,userPw];
+    console.log(params);
     connection.query(sql, params,(err,rows,fields)=>{
         console.log("test");
         console.log(rows);
         console.log(err);
         
-        if(err) res.json({loginSuccess:false, err})
+        if(rows!=null) res.json({loginSuccess:true})
         return res.status(200).json({
-            loginSuccess:true
+            loginSuccess:false
         })
     })
 })
